@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buyer Profile</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef3f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #1a3a5c;
+      color: white;
+      padding: 18px 32px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      gap: 24px;
+      padding: 24px 32px;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ── LEFT: FORM ── */
+    .form-panel {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      padding: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #2d6aad;
+      margin: 20px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #ddeaf8;
+    }
+
+    .section-title:first-child { margin-top: 0; }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a6080;
+    }
+
+    input, select, textarea {
+      border: 1px solid #ccdaea;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 13.5px;
+      color: #1a2e44;
+      background: #f8fbff;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #2d6aad;
+      background: white;
+    }
+
+    textarea { resize: vertical; min-height: 70px; }
+
+    .row { display: flex; gap: 12px; }
+    .row .field { flex: 1; }
+
+    /* ── RIGHT: PREVIEW ── */
+    .preview-panel {
+      width: 360px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #1a3a5c, #2d6aad);
+      padding: 24px 22px 20px;
+      color: white;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    .preview-name {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+      min-height: 22px;
+    }
+
+    .preview-subtitle {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 3px;
+    }
+
+    .card-body {
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .info-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #ddeaf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .info-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: #2d6aad;
+    }
+
+    .info-content { flex: 1; }
+
+    .info-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #8aabcc;
+    }
+
+    .info-value {
+      font-size: 13px;
+      color: #1a2e44;
+      font-weight: 500;
+      min-height: 18px;
+      word-break: break-word;
+    }
+
+    .info-value.placeholder { color: #b0c4d8; font-style: italic; }
+
+    .divider {
+      height: 1px;
+      background: #eef3f9;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      background: #ddeaf8;
+      color: #1a3a5c;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .budget-card {
+      background: linear-gradient(135deg, #2d6aad, #4a90d9);
+      border-radius: 10px;
+      padding: 18px 22px;
+      color: white;
+    }
+
+    .budget-label {
+      font-size: 11px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .budget-value {
+      font-size: 26px;
+      font-weight: 700;
+      min-height: 32px;
+    }
+
+    .budget-sub {
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    .notes-card {
+      background: #f0f6ff;
+      border-radius: 10px;
+      padding: 16px 18px;
+      border-left: 4px solid #2d6aad;
+    }
+
+    .notes-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #2d6aad;
+      margin-bottom: 6px;
+    }
+
+    .notes-text {
+      font-size: 13px;
+      color: #2a3f58;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 18px;
+    }
+
+    .notes-text.placeholder { color: #b0c4d8; font-style: italic; }
+
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-active { background: #d4edda; color: #155724; }
+    .status-preapproved { background: #cce5ff; color: #004085; }
+    .status-conditional { background: #fff3cd; color: #856404; }
+    .status-none { background: #f0f0f0; color: #888; }
+  </style>
+</head>
+<body>
+
+<header>Barfoot &amp; Thompson &nbsp;|&nbsp; Buyer Profile</header>
+
+<div class="container">
+
+  <!-- LEFT: FORM -->
+  <div class="form-panel">
+
+    <div class="section-title">Personal Details</div>
+
+    <div class="row">
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" id="firstName" placeholder="e.g. Sarah" oninput="update()">
+      </div>
+      <div class="field">
+        <label>Last Name</label>
+        <input type="text" id="lastName" placeholder="e.g. Thompson" oninput="update()">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Phone</label>
+        <input type="text" id="phone" placeholder="e.g. 021 123 4567" oninput="update()">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="e.g. sarah@email.com" oninput="update()">
+      </div>
+    </div>
+
+    <div class="section-title">Property Preferences</div>
+
+    <div class="field">
+      <label>Preferred Suburb(s)</label>
+      <input type="text" id="suburb" placeholder="e.g. Remuera, Epsom, Newmarket" oninput="update()">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Property Type</label>
+        <select id="propType" onchange="update()">
+          <option value="">Select...</option>
+          <option>House</option>
+          <option>Apartment</option>
+          <option>Townhouse</option>
+          <option>Section</option>
+          <option>Any</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Bedrooms</label>
+        <select id="bedrooms" onchange="update()">
+          <option value="">Select...</option>
+          <option>1+</option>
+          <option>2+</option>
+          <option>3+</option>
+          <option>4+</option>
+          <option>5+</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">Budget &amp; Finance</div>
+
+    <div class="row">
+      <div class="field">
+        <label>Budget (max)</label>
+        <input type="text" id="budget" placeholder="e.g. 1,200,000" oninput="update()">
+      </div>
+      <div class="field">
+        <label>Finance Status</label>
+        <select id="finance" onchange="update()">
+          <option value="">Select...</option>
+          <option>Pre-approved</option>
+          <option>Conditional approval</option>
+          <option>Cash buyer</option>
+          <option>Not yet arranged</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">Timeline &amp; Notes</div>
+
+    <div class="row">
+      <div class="field">
+        <label>Purchase Timeline</label>
+        <select id="timeline" onchange="update()">
+          <option value="">Select...</option>
+          <option>ASAP</option>
+          <option>1–3 months</option>
+          <option>3–6 months</option>
+          <option>6–12 months</option>
+          <option>Flexible</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Date Registered</label>
+        <input type="date" id="dateReg" oninput="update()">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Notes</label>
+      <textarea id="notes" placeholder="e.g. Prefers north-facing, needs double garage, open to do-ups..." oninput="update()"></textarea>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: PREVIEW -->
+  <div class="preview-panel">
+
+    <!-- Main Card -->
+    <div class="card">
+      <div class="card-header">
+        <div class="avatar" id="preAvatar">?</div>
+        <div class="preview-name" id="preName">New Buyer</div>
+        <div class="preview-subtitle" id="preDate"></div>
+      </div>
+      <div class="card-body">
+
+        <div class="info-row">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Phone</div>
+            <div class="info-value placeholder" id="prePhone">Not provided</div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Email</div>
+            <div class="info-value placeholder" id="preEmail">Not provided</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="info-row">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Preferred Area</div>
+            <div class="info-value placeholder" id="preSuburb">Not specified</div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Property Requirements</div>
+            <div class="info-value placeholder" id="prePropReq">Not specified</div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/></svg>
+          </div>
+          <div class="info-content">
+            <div class="info-label">Finance &amp; Timeline</div>
+            <div class="info-value placeholder" id="preFinanceTimeline">Not specified</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Budget Card -->
+    <div class="budget-card">
+      <div class="budget-label">Maximum Budget</div>
+      <div class="budget-value" id="preBudget">–</div>
+      <div class="budget-sub" id="prefinanceBadge">Finance status not specified</div>
+    </div>
+
+    <!-- Notes Card -->
+    <div class="notes-card">
+      <div class="notes-label">Notes</div>
+      <div class="notes-text placeholder" id="preNotes">No notes added yet.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function val(id) { return document.getElementById(id).value.trim(); }
+
+  function setVal(id, text, fallback) {
+    const el = document.getElementById(id);
+    if (text) {
+      el.textContent = text;
+      el.classList.remove('placeholder');
+    } else {
+      el.textContent = fallback;
+      el.classList.add('placeholder');
+    }
+  }
+
+  function update() {
+    const first = val('firstName');
+    const last  = val('lastName');
+    const fullName = [first, last].filter(Boolean).join(' ');
+
+    // Avatar initials
+    const av = document.getElementById('preAvatar');
+    const initials = [(first[0] || ''), (last[0] || '')].filter(Boolean).join('').toUpperCase();
+    av.textContent = initials || '?';
+
+    // Name
+    setVal('preName', fullName, 'New Buyer');
+
+    // Date registered
+    const dateReg = val('dateReg');
+    document.getElementById('preDate').textContent = dateReg
+      ? 'Registered ' + new Date(dateReg).toLocaleDateString('en-NZ', { day:'numeric', month:'short', year:'numeric' })
+      : '';
+
+    // Contact
+    setVal('prePhone', val('phone'), 'Not provided');
+    setVal('preEmail', val('email'), 'Not provided');
+
+    // Suburb
+    setVal('preSuburb', val('suburb'), 'Not specified');
+
+    // Property requirements
+    const pType = val('propType');
+    const beds  = val('bedrooms');
+    const propReq = [pType, beds ? beds + ' bed' : ''].filter(Boolean).join(', ');
+    setVal('prePropReq', propReq, 'Not specified');
+
+    // Finance + Timeline
+    const fin      = val('finance');
+    const timeline = val('timeline');
+    const ft = [fin, timeline].filter(Boolean).join(' · ');
+    setVal('preFinanceTimeline', ft, 'Not specified');
+
+    // Budget
+    const budget = val('budget');
+    document.getElementById('preBudget').textContent = budget ? '$' + budget : '–';
+
+    // Finance badge (subtitle under budget)
+    document.getElementById('prefinanceBadge').textContent = fin || 'Finance status not specified';
+
+    // Notes
+    const notes = val('notes');
+    const notesEl = document.getElementById('preNotes');
+    if (notes) {
+      notesEl.textContent = notes;
+      notesEl.classList.remove('placeholder');
+    } else {
+      notesEl.textContent = 'No notes added yet.';
+      notesEl.classList.add('placeholder');
+    }
+  }
+
+  // Set today's date as default
+  document.getElementById('dateReg').valueAsDate = new Date();
+  update();
+</script>
+</body>
+</html>
